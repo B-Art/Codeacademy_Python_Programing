@@ -11,7 +11,7 @@ def unique_english_letters(word):
         if letter not in unique_letters:
             unique_letters.append(letter)
             count += 1
-    return (count)
+    return count
 
 
 # Uncomment these function calls to test your function:
