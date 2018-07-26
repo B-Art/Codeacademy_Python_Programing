@@ -12,7 +12,7 @@ alphabet = string.ascii_lowercase # this is why I am importing the string librar
 print(alphabet.find('a'))
 
 # declare punctuations, they are not encrypted
-punctuation = "!?."
+punctuation = "!?.'"
 
 # test
 print("." in punctuation) # should print out True
@@ -84,3 +84,25 @@ def encode(message, offset):
 print(encode("hey there! this is an example of a caesar cipher. were you able to decode it? i hope so! send me "
              "a message back with the same offset!", 10))
 # should print the encoded message appearing in line 60 as an argument for the decode function
+
+
+# decode this: "jxu evviuj veh jxu iusedt cuiiqwu yi vekhjuud."
+print(decode("jxu evviuj veh jxu iusedt cuiiqwu yi vekhjuud.",10))
+# this prints "the offset for the second message is fourteen."
+
+# now decode the second message "bqdradyuzs ygxfubxq omqemd oubtqde fa oapq kagd yqeemsqe ue qhqz yadq eqogdq!"
+print(decode("bqdradyuzs ygxfubxq omqemd oubtqde fa oapq kagd yqeemsqe ue qhqz yadq eqogdq!", 14)) # 14 offset
+# this prints "performing multiple caesar ciphers to code your messages is even more secure!"
+
+# brute-force decryption... when the offset is not given to you...
+# vhfinmxkl atox kxgwxkxw tee hy maxlx hew vbiaxkl tl hulhexmx. px'ee atox mh kxteer lmxi ni hnk ztfx by px ptgm
+# mh dxxi hnk fxlltzxl ltyx.
+
+# i am not typing out every possible offset to call out the decode function, so I'll run a for-loop as shown below
+for i in range(100):
+    print(decode("vhfinmxkl atox kxgwxkxw tee hy maxlx hew vbiaxkl tl hulhexmx. px'ee atox mh kxteer lmxi ni hnk ztfx "
+                 "by px ptgm mh dxxi hnk fxlltzxl ltyx.", i) + " (The offset was " + str(i) + ".)")
+# the for loop above also prints out the offset of which the message resembled the English language
+# after reading out the 100 printouts, the only readable message was with an offset of 7 (everything else was gibberish)
+# Result: "computers have rendered all of these old ciphers as obsolete. we'll have to really step up our game
+# if we want to keep our messages safe." (The offset was 7.) ... true that
