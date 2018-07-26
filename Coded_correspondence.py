@@ -63,6 +63,8 @@ print(decode("xuo jxuhu! jxyi yi qd unqcfbu ev q squiqh syfxuh. muhu oek qrbu je
 # this prints: "hey there! this is an example of a caesar cipher. were you able to decode it? i hope so! send me
 # a message back with the same offset!"
 
+# the function below takes the reverse direction by taking a message as an argument and encodes it into a ciphertext
+# according to a defined offset which is the number of positions to the *left* of the alphabet
 def letter_encode(letter, offset):
     letter_index = alphabet.find(letter)
     new_index = letter_index - offset # if new_index is negative, a index of -1 in alphabet is "z", -2 for "y"...
@@ -81,4 +83,4 @@ def encode(message, offset):
 
 print(encode("hey there! this is an example of a caesar cipher. were you able to decode it? i hope so! send me "
              "a message back with the same offset!", 10))
-# should print the encoded message appearing in line 63 as an argument for the decode function
+# should print the encoded message appearing in line 60 as an argument for the decode function
