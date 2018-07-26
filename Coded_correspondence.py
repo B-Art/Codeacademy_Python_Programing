@@ -1,12 +1,12 @@
 # The following describes the writing of a cipher decryption tool in Python.
 # Historically, the Caesar cipher was conceived by Julius Caesar himself to secure his private communications.
 # Each letter are replaced by a letter that is shifted by a certain number of positions up or down the alphabet.
-
+# We will take a encrypted message with letters shifted to the right by 10 positions and write a decryption algorithm
 
 import string
 
 # declare alphabets
-alphabet = string.ascii_lowercase
+alphabet = string.ascii_lowercase # this is why I am importing the string library in line #6
 
 print(alphabet.find('a'))
 
