@@ -106,3 +106,90 @@ for i in range(100):
 # after reading out the 100 printouts, the only readable message was with an offset of 7 (everything else was gibberish)
 # Result: "computers have rendered all of these old ciphers as obsolete. we'll have to really step up our game
 # if we want to keep our messages safe." (The offset was 7.) ... true that
+
+# Now comes the harder cryptography method to implement... The Vigenere Cipher
+# Originally developed by Giovan Battista Ballaso in 1553, Blaise de Vigenere enhanced the polyalphabetic cipher
+# where each letter of the message are shifted according to the corresponding cipher key, unlike the monoalphabetic
+# cipher of how Caesar would encrypt messages
+# The Vegenere Cipher confers a stronger encryption as the user could use virtually *any* key to influence how the
+# message is encoded into cipher text
+
+# To encode each letter of the plaintext: take the index of letter *respective to the alphabet ("a" is 0, "b" is 1,
+# "c" is 2, and so forth) and add that to the corresponding index of letter of the key, and the sum is the index of the
+# encoded letter - if the index >= 26, subtract 26 to get the actual index (i.e. "z" is 25 but there is nothing at 26)
+
+def vigenere_letter_encode(plaintext_letter, key_letter):
+    index_plaintext_letter = alphabet.find(plaintext_letter)
+    index_key_letter = alphabet.find(key_letter)
+    encoded_index = index_plaintext_letter + index_key_letter
+
+    if encoded_index > 25:
+        return alphabet[encoded_index - 26] # based on the comment made on line 119
+    else:
+        return alphabet[encoded_index] # simple enough..
+
+# testing
+print(vigenere_letter_encode("b", "d")) # should print "e"
+print(vigenere_letter_encode("a", "o")) # should print "o"
+print(vigenere_letter_encode("r", "g")) # should print "x"
+print(vigenere_letter_encode("t", "o")) # should print "h"
+# great!
+
+# now, if the key is shorter in length than the message, the key is repeated as a string to match the message length
+def vigenere_encode(message, keyword):
+    modified_keyword = ""
+    for i in range(len(message)):
+        modified_keyword += keyword[i % len(keyword)] # modulo to the rescue!
+
+    # test 1 below
+    #print(message)
+    #print(modified_keyword)
+
+    ciphertext = ""
+    for i in range(len(message)):
+        if message[i] in punctuation:
+            ciphertext += message[i]
+        elif message[i] is " ":
+            ciphertext += " "
+        else:
+            ciphertext += vigenere_letter_encode(message[i], modified_keyword[i])
+
+    return ciphertext
+
+# test
+print(vigenere_encode("hello my name is william!!", "friend"))
+
+print(vigenere_encode("barryisthespy", "dog"))
+print("eoxumovhnhgvb")
+
+
+# now going the reverse direction...
+def vigenere_letter_decode(ciphertext_letter, key_letter):
+    index_ciphertext_letter = alphabet.find(ciphertext_letter)
+    index_key_letter = alphabet.find(key_letter)
+    decoded_index = index_ciphertext_letter - index_key_letter
+    return decoded_index
+
+def vigenere_decode(ciphertext, keyword):
+    modified_keyword = ""
+    for i in range(len(ciphertext)):
+        modified_keyword += keyword[i % len(keyword)]
+
+    plaintext = ""
+    for i in range(len(ciphertext)):
+        if ciphertext[i] in punctuation:
+            plaintext += ciphertext[i]
+        elif ciphertext[i] is " ":
+            plaintext += " "
+        else:
+            plaintext += alphabet[vigenere_letter_decode(ciphertext[i], modified_keyword[i])]
+    return plaintext
+
+print(vigenere_decode("eoxumovhnhgvb", "dog"))
+
+# now the grand finale
+print(vigenere_decode("dfc jhjj ifyh yf hrfgiv xulk? vmph bfzo! qtl eeh gvkszlfl yyvww kpi hpuvzx dl tzcgrywrxll!",
+                      "friends"))
+
+# message: you were able to decode this? nice work! you are becoming quite the expert at crytography!
+# Done.
