@@ -2,6 +2,7 @@
 # Historically, the Caesar cipher was conceived by Julius Caesar himself to secure his private communications
 # Each letter are replaced by a letter that is shifted by a certain number of positions up or down the alphabet
 # We will take a encrypted message with letters shifted to the right by 10 positions and write a decryption algorithm
+# Line 54 shows the code in action and line 57 prints out the solution
 
 import string
 
@@ -40,8 +41,6 @@ print("Converted letter: " + some_letter)
 
 # the main function, which will call out letter_reassign function
 def decode(sentence, cipherdex):
-    words = sentence.split(" ")
-
     new_sentence = ""
     for letter in sentence:
         if letter in punctuation:
