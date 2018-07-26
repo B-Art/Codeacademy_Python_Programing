@@ -52,6 +52,8 @@ def decode(sentence, cipherdex):
             new_sentence += letter_reassign(letter, cipherdex)
     return new_sentence
 
-print(decode("xuo jxuhu! jxyi yi qd unqcfbu ev q squiqh syfxuh. muhu oek qrbu je tusetu yj? y xefu ie! iudt cu q cuiiqwu rqsa myjx jxu iqcu evviuj!", 10))
+print(decode("xuo jxuhu! jxyi yi qd unqcfbu ev q squiqh syfxuh. muhu oek qrbu je tusetu yj? y xefu ie! iudt cu q "
+             "cuiiqwu rqsa myjx jxu iqcu evviuj!", 10))
 
-# this prints: "hey there! this is an example of a caesar cipher. were you able to decode it? i hope so! send me a message back with the same offset!"
+# this prints: "hey there! this is an example of a caesar cipher. were you able to decode it? i hope so! send me
+# a message back with the same offset!"
