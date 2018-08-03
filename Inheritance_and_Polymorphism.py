@@ -47,3 +47,27 @@ candle_shop.buy('blue')
 
 # This should raise OutOfStock:
 candle_shop.buy('green')
+
+
+# override methods, case of a messaging system
+
+class Message:
+  def __init__(self, sender, recipient, text):
+    self.sender = sender
+    self.recipient = recipient
+    self.text = text
+
+
+class User:
+  def __init__(self, username):
+    self.username = username
+
+  def edit_message(self, message, new_text):
+    if message.sender == self.username:
+      message.text = new_text
+
+# Create an Admin class that subclasses the User class.
+class Admin(User):
+  # Override User's .edit_message() method in Admin so that an Admin can edit any messages.
+  def edit_message(self, message, new_text):
+    message.text = new_text
