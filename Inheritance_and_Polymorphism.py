@@ -71,3 +71,22 @@ class Admin(User):
   # Override User's .edit_message() method in Admin so that an Admin can edit any messages.
   def edit_message(self, message, new_text):
     message.text = new_text
+
+
+"""
+Overriding methods is really useful in some cases but sometimes we want to add some extra logic to the existing method.
+In order to do that we need a way to call the method from the parent class. Python gives us a way to do that using super().
+"""
+
+
+class PotatoSalad:
+  def __init__(self, potatoes, celery, onions):
+    self.potatoes = potatoes
+    self.celery = celery
+    self.onions = onions
+
+
+class SpecialPotatoSalad(PotatoSalad):
+  def __init__(self, potatoes, celery, onions):
+    super().__init__(potatoes, celery, onions)
+    self.raisins = 40
