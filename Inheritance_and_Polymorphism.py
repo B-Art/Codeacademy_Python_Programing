@@ -90,3 +90,87 @@ class SpecialPotatoSalad(PotatoSalad):
   def __init__(self, potatoes, celery, onions):
     super().__init__(potatoes, celery, onions)
     self.raisins = 40
+
+# Interfaces
+"""
+When two classes have the same method names and attributes, we say they implement the same interface.
+"""
+
+
+class InsurancePolicy:
+  def __init__(self, price_of_item):
+    self.price_of_insured_item = price_of_item
+
+
+# create a subclass of InsurancePolicy
+class VehicleInsurance(InsurancePolicy):
+  def __init__(self, price_of_item):
+    self.price_of_vehicle = price_of_item
+
+  # declare a .get_rate() method
+  def get_rate(self):
+    return 0.001 * self.price_of_vehicle
+
+
+# create another subclass of InsurancePolicy
+class HomeInsurance(InsurancePolicy):
+  def __init__(self, price_of_item):
+    self.price_of_home = price_of_item
+
+  # declare a .get_rate() method
+  def get_rate(self):
+    return 0.00005 * self.price_of_home
+
+
+# polymorphism refers how an action could become different depending on the data type it handles
+
+a_list = [1, 18, 32, 12]
+a_dict = {'value': True}
+a_string = "Polymorphism is cool!"
+
+print(len(a_list))
+print(len(a_dict))
+print(len(a_string))
+
+
+class Atom:
+  def __init__(self, label):
+    self.label = label
+
+  def __add__(self, other):
+    return Molecule([self, other])
+
+class Molecule:
+  def __init__(self, atoms):
+    if type(atoms) is list:
+	    self.atoms = atoms
+
+sodium = Atom("Na")
+chlorine = Atom("Cl")
+#salt = Molecule([sodium, chlorine])
+salt = sodium + chlorine
+print(salt)
+
+class LawFirm:
+  def __init__(self, practice, lawyers):
+    self.practice = practice
+    self.lawyers = lawyers
+
+  def __len__(self):
+    return len(self.lawyers)
+
+  def __contains__(self, lawyer):
+    return lawyer in self.lawyers
+
+d_and_p = LawFirm("Injury", ["Donelli", "Paderewski"])
+
+
+class SortedList(list):
+  def append(self, value):
+    super().append(value)
+    self.sort()
+
+test = SortedList([4, 1, 5])
+print(test)
+test.append(15)
+print(test)
