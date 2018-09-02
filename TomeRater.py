@@ -1,4 +1,6 @@
 class User(object):
+
+    # Constructor method
     def __init__(self, name, email):
         pass
 
