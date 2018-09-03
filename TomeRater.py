@@ -4,7 +4,7 @@ class User(object):
     def __init__(self, name, email):
         self.name = name # string
         self.email = email # string
-        self.books = {} # empty dictionary that will map a Book object
+        self.books = {} # empty dictionary that will map a Book object to a user's rating of the book
 
     def get_email(self):
         return self.email
@@ -85,6 +85,9 @@ class Book(object):
     def __hash__(self):
         return hash((self.title, self.isbn))
 
+    def __repr__(self):
+        return "{title}".format(title=self.title)
+
 
 class Fiction(Book):
 
@@ -146,12 +149,13 @@ class TomeRater(object):
             print("No user with email {email}".format(email=email))
         else:
             self.users[email].read_book(book, rating)
-            #self.users.add_rating(rating)
+            if book not in self.books.keys():
+                self.books[book] = 1
+                book.add_rating(rating)
+            else:
+                self.books[book] += 1
+                book.add_rating(rating)
 
-        if book not in self.books.keys():
-            self.books[book] = 1
-        else:
-            self.books[book] += 1
 
     def add_user(self, name, email, books=None):
         new_user = User(name, email)
@@ -161,12 +165,45 @@ class TomeRater(object):
             for book in books:
                 self.add_book_to_user(book, email)
 
-test = TomeRater()
+
+#test = TomeRater()
 #test.add_book_to_user("How to Python", "wchian2@uic.edu")
-test.add_user("Michael", "mstevens@gmail.com", ["Dicey", "Running Times"])
-test.add_book_to_user("How to Python", "mstevens@gmail.com")
-test.add_user("Some Guy", "some_dude@gmail.com")
-test.add_book_to_user("Finally, a new book", "some_dude@gmail.com")
-test.add_user("Pythonista", "pythonista@psf.com", ["How to Python"])
-print(test.users["mstevens@gmail.com"].books)
-print(test.books)
+#test.add_user("Michael", "mstevens@gmail.com", ["Dicey", "Running Times"])
+#test.add_book_to_user("How to Python", "mstevens@gmail.com")
+#test.add_user("Some Guy", "some_dude@gmail.com")
+#test.add_book_to_user("Finally, a new book", "some_dude@gmail.com")
+#test.add_user("Pythonista", "pythonista@psf.com", ["How to Python"])
+#print(test.users["mstevens@gmail.com"].books)
+#print(test.books)
+
+Tome_Rater = TomeRater()
+
+#Create some books:
+book1 = Tome_Rater.create_book("Society of Mind", 12345678)
+novel1 = Tome_Rater.create_novel("Alice In Wonderland", "Lewis Carroll", 12345)
+novel1.set_isbn(9781536831139)
+nonfiction1 = Tome_Rater.create_non_fiction("Automate the Boring Stuff", "Python", "beginner", 1929452)
+nonfiction2 = Tome_Rater.create_non_fiction("Computing Machinery and Intelligence", "AI", "advanced", 11111938)
+novel2 = Tome_Rater.create_novel("The Diamond Age", "Neal Stephenson", 10101010)
+novel3 = Tome_Rater.create_novel("There Will Come Soft Rains", "Ray Bradbury", 10001000)
+
+#Create users:
+Tome_Rater.add_user("Alan Turing", "alan@turing.com")
+Tome_Rater.add_user("David Marr", "david@computation.org")
+
+#Add a user with three books already read:
+Tome_Rater.add_user("Marvin Minsky", "marvin@mit.edu", books=[book1, novel1, nonfiction1])
+
+#Add books to a user one by one, with ratings:
+Tome_Rater.add_book_to_user(book1, "alan@turing.com", 1.0)
+Tome_Rater.add_book_to_user(novel1, "alan@turing.com", 3.0)
+Tome_Rater.add_book_to_user(nonfiction1, "alan@turing.com", 3.0)
+Tome_Rater.add_book_to_user(nonfiction2, "alan@turing.com", 4.0)
+Tome_Rater.add_book_to_user(novel3, "alan@turing.com", 1.0)
+
+Tome_Rater.add_book_to_user(novel2, "marvin@mit.edu", 2)
+Tome_Rater.add_book_to_user(novel3, "marvin@mit.edu", 2)
+Tome_Rater.add_book_to_user(novel3, "david@computation.org", 4)
+
+
+
