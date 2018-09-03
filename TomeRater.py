@@ -78,6 +78,12 @@ class Book(object):
         else:
             print("Invalid rating. Please rate between 0 to 4.")
 
+    def get_average_rating(self):
+        total_ratings = 0
+        for rating in self.ratings:
+            total_ratings += rating
+        return total_ratings / len(self.ratings)
+
     def __eq__(self, other):
         return self.title == other.title and self.isbn == other.isbn
 
@@ -165,20 +171,49 @@ class TomeRater(object):
             for book in books:
                 self.add_book_to_user(book, email)
 
+    # Analysis methods
+    def print_catalog(self):
+        for book in self.books.keys():
+            print(book)
 
-#test = TomeRater()
-#test.add_book_to_user("How to Python", "wchian2@uic.edu")
-#test.add_user("Michael", "mstevens@gmail.com", ["Dicey", "Running Times"])
-#test.add_book_to_user("How to Python", "mstevens@gmail.com")
-#test.add_user("Some Guy", "some_dude@gmail.com")
-#test.add_book_to_user("Finally, a new book", "some_dude@gmail.com")
-#test.add_user("Pythonista", "pythonista@psf.com", ["How to Python"])
-#print(test.users["mstevens@gmail.com"].books)
-#print(test.books)
+    def print_users(self):
+        for user in self.users.keys():
+            print(user)
 
+    def most_read_book(self):
+        book_name = ""
+        max_count = 0
+        for book in self.books:
+            if self.books[book] > max_count:
+                book_name = book
+                max_count = self.books[book]
+        print("The most read book is \"{book_name}\" with a count of {count} reads.".format(book_name=book_name, count=max_count))
+
+    def highest_rated_book(self):
+        book_name = ""
+        average_rating = 0
+        for book in self.books:
+            if book.get_average_rating() > average_rating:
+                book_name = book.get_title()
+                average_rating = book.get_average_rating()
+        print("The highest rated book on average is \"{book_name}\" with an average score of {score}".format(book_name=book_name, score=average_rating))
+
+    def most_positive_user(self):
+        user_name = ""
+        average_rating = 0
+        for user in self.users:
+            if self.users[user].get_average_rating() > average_rating:
+                user_name = user
+                average_rating = self.users[user].get_average_rating()
+        print("The most positive user was {user} who rated books at an average of {average}.".format(user=user_name, average=average_rating))
+
+
+# App testing
+
+# Initialize app class
 Tome_Rater = TomeRater()
 
-#Create some books:
+# Create some books:
 book1 = Tome_Rater.create_book("Society of Mind", 12345678)
 novel1 = Tome_Rater.create_novel("Alice In Wonderland", "Lewis Carroll", 12345)
 novel1.set_isbn(9781536831139)
@@ -187,14 +222,14 @@ nonfiction2 = Tome_Rater.create_non_fiction("Computing Machinery and Intelligenc
 novel2 = Tome_Rater.create_novel("The Diamond Age", "Neal Stephenson", 10101010)
 novel3 = Tome_Rater.create_novel("There Will Come Soft Rains", "Ray Bradbury", 10001000)
 
-#Create users:
+# Create users:
 Tome_Rater.add_user("Alan Turing", "alan@turing.com")
 Tome_Rater.add_user("David Marr", "david@computation.org")
 
-#Add a user with three books already read:
+# Add a user with three books already read:
 Tome_Rater.add_user("Marvin Minsky", "marvin@mit.edu", books=[book1, novel1, nonfiction1])
 
-#Add books to a user one by one, with ratings:
+# Add books to a user one by one, with ratings:
 Tome_Rater.add_book_to_user(book1, "alan@turing.com", 1.0)
 Tome_Rater.add_book_to_user(novel1, "alan@turing.com", 3.0)
 Tome_Rater.add_book_to_user(nonfiction1, "alan@turing.com", 3.0)
@@ -205,5 +240,13 @@ Tome_Rater.add_book_to_user(novel2, "marvin@mit.edu", 2)
 Tome_Rater.add_book_to_user(novel3, "marvin@mit.edu", 2)
 Tome_Rater.add_book_to_user(novel3, "david@computation.org", 4)
 
+print("Print catalog test:")
+Tome_Rater.print_catalog()
 
+print("USERS:")
+Tome_Rater.print_users()
 
+Tome_Rater.most_read_book()
+Tome_Rater.highest_rated_book()
+Tome_Rater.most_positive_user()
+# Success!
