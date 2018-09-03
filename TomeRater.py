@@ -19,6 +19,23 @@ class User(object):
     def __eq__(self, other_user):
         return self.name == other_user.name and self.email == other_user.email
 
+    def read_book(self, book, rating=None):
+        # a way of "appending" elements to a dictionary
+        self.books[book] = rating
+
+    def get_average_rating(self):
+        list_of_ratings = self.books.values()
+        sum = 0
+        length_of_rating = 0
+        for rating in list_of_ratings:
+            if rating == None:
+                pass
+            else:
+                sum += rating
+                length_of_rating += 1
+        return sum / length_of_rating
+
+
 # The __eq__ dunder method is new to me, so the next 6 lines is a test of equality
 william = User("William", "wchian2@uic.edu")
 jack = User("William", "wchian2@uic.edu")
@@ -26,6 +43,14 @@ other_jack = User("William", "william.chiang@domain.com")
 
 print("Equality result: " + str(william == jack)) # prints out true, oh I get it...
 print("Equality result: " + str(william == other_jack)) # prints out false
+
+# Testing the get_average_rating method.. looks good
+william.read_book("Of mice and men", 9)
+william.read_book("Batman", 17.5)
+william.read_book("A Work in Progress")
+william.read_book("Testing Self", 22.5)
+print(william.get_average_rating())
+
 
 class Book(object):
 
@@ -55,6 +80,10 @@ class Book(object):
 
     def __eq__(self, other):
         return self.title == other.title and self.isbn == other.isbn
+
+    # the following method will make the Book class hashable
+    def __hash__(self):
+        return hash((self.title, self.isbn))
 
 
 class Fiction(Book):
@@ -92,3 +121,52 @@ class Non_Fiction(Book):
 
 society_of_mind = Non_Fiction("Society of Mind", "Artificial Intelligence", "beginner", 100000)
 print(society_of_mind)
+
+# This important class allows interaction between the User and Books class!
+class TomeRater(object):
+
+    def __init__(self):
+        self.users = {} # empty dictionary that will map a user's email to the User object
+        self.books = {} # empty dictionary that will map Book objects to the number of users who read it
+
+    def create_book(self, title, isbn):
+        new_book = Book(title, isbn)
+        return new_book
+
+    def create_novel(self, title, author, isbn):
+        new_fiction = Fiction(title, isbn, author)
+        return new_fiction
+
+    def create_non_fiction(self, title, subject, level, isbn):
+        new_non_fiction = Non_Fiction(title, subject, level, isbn)
+        return new_non_fiction
+
+    def add_book_to_user(self, book, email, rating=None):
+        if email not in self.users.keys():
+            print("No user with email {email}".format(email=email))
+        else:
+            self.users[email].read_book(book, rating)
+            #self.users.add_rating(rating)
+
+        if book not in self.books.keys():
+            self.books[book] = 1
+        else:
+            self.books[book] += 1
+
+    def add_user(self, name, email, books=None):
+        new_user = User(name, email)
+        self.users[email] = new_user
+
+        if books != None:
+            for book in books:
+                self.add_book_to_user(book, email)
+
+test = TomeRater()
+#test.add_book_to_user("How to Python", "wchian2@uic.edu")
+test.add_user("Michael", "mstevens@gmail.com", ["Dicey", "Running Times"])
+test.add_book_to_user("How to Python", "mstevens@gmail.com")
+test.add_user("Some Guy", "some_dude@gmail.com")
+test.add_book_to_user("Finally, a new book", "some_dude@gmail.com")
+test.add_user("Pythonista", "pythonista@psf.com", ["How to Python"])
+print(test.users["mstevens@gmail.com"].books)
+print(test.books)
