@@ -146,15 +146,16 @@ print(calculate_all_error(-1, 1, datapoints))
 # In[27]:
 
 
-possible_ms = [num * 0.1 for num in range(-100, 101)]
-
+possible_ms = [num / 10 for num in range(-100, 101)] # dividing by 10 gives another result ... phyton bug?
+possible_ms = [i/1000 for i in range(0, 301, 1)] # takes a bit longer but gives a closer answer
 
 # Now, let's make a list of `possible_bs` to check that would be the values from -20 to 20, in steps of 0.1:
 
 # In[28]:
 
 
-possible_bs = [num * 0.1 for num in range(-200, 201)]
+possible_bs = [num / 10 for num in range(-200, 201)] # dividing by 10 gives another result ... phyton bug?
+possible_bs = [i/1000 for i in range(-1000, 2001, 1)] # # takes a bit longer but gives a closer answer
 
 
 # We are going to find the smallest error. First, we will make every possible `y = m*x + b` line by pairing all of the possible `m`s with all of the possible `b`s. Then, we will see which `y = m*x + b` line produces the smallest total error with the set of data stored in `datapoint`.
@@ -181,6 +182,15 @@ possible_bs = [num * 0.1 for num in range(-200, 201)]
 
 datapoints = [(1, 2), (2, 0), (3, 4), (4, 4), (5, 3)]
 
+# for better result add the average point to the list!
+average_x = 0.0
+average_y = 0.0
+for point in datapoints:
+    average_x += point[0]/len(datapoints)
+    average_y += point[1]/len(datapoints)
+averagepoint = [(average_x, average_y)]
+datapoints += averagepoint
+
 smallest_error = float("inf")
 best_m = 0
 best_b = 0
@@ -192,10 +202,13 @@ for m in possible_ms:
             smallest_error = error
             best_m = m
             best_b = b
-print("Best m: " + str(best_m))
-print("Best b: " + str(best_b))
-print("Smallest error: " + str(smallest_error))
+print(datapoints)
+print("BEST_M: {:f} BEST_B: {:f} SMALLEST_ERROR: {:f}".format(best_m, best_b, smallest_error))
 
+# [(1, 2), (2, 0), (3, 4), (4, 4), (5, 3)]
+# BEST_M: 0.3000 BEST_B: 1.700000 SMALLEST_ERROR: 5.000000
+# [(1, 2), (2, 0), (3, 4), (4, 4), (5, 3), (3.0, 2.6)] # with the averagepoint
+# BEST_M: 0.300000 BEST_B: 1.700000 SMALLEST_ERROR: 5.000000
 
 # ## Part 3: What does our model predict?
 # 
